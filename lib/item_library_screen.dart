@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tboi_companion_app/screens/item_detail_screen.dart';
 import 'db/database_helper.dart';
 import 'models/item.dart';
 
 class ItemLibraryScreen extends StatefulWidget {
-  const ItemLibraryScreen({super.key});
-
   @override
   _ItemLibraryScreenState createState() => _ItemLibraryScreenState();
 }
@@ -118,9 +115,44 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
   }
 
   void _showItemDetails(BuildContext context, Item item) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ItemDetailScreen(item: item)),
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Color(0xFF2C2C2C),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/images/${item.imagePath}',
+                width: 100,
+                height: 100,
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                item.name,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                item.description,
+                style: TextStyle(color: Colors.white, fontSize: 16.0),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.0),
+            ],
+          ),
+        );
+      },
     );
   }
 }

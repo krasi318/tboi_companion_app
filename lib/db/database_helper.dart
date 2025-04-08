@@ -8,11 +8,6 @@ class DatabaseHelper {
 
   DatabaseHelper._init();
 
-  Future<void> clearItems() async {
-    final db = await instance.database;
-    await db.delete('items');
-  }
-
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB('all_items.db');

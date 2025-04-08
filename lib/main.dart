@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tboi_companion_app/db/seed_data.dart';
 import 'item_library_screen.dart';
@@ -7,22 +6,24 @@ import 'scan_screen.dart';
 import 'db/database_helper.dart';
 
 void main() async {
+  // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
-  final db = DatabaseHelper.instance;
 
-  await db.clearItems();
-  await SeedData.insertInitialData();
+  // Initialize database
+  final dbHelper = DatabaseHelper.instance;
+  await dbHelper.database; // This will create the database if it doesn't exist
 
-  runApp(IsaacCompanionApp(cameras: cameras));
+  // Check if database is empty and seed if needed
+  final items = await dbHelper.getAllItems();
+  if (items.isEmpty) {
+    await SeedData.insertInitialData();
+    print('Database seeded with initial items!');
+  }
+
+  runApp(IsaacCompanionApp());
 }
 
 class IsaacCompanionApp extends StatelessWidget {
-  const IsaacCompanionApp({
-    super.key,
-    required List<CameraDescription> cameras,
-  });
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,8 +35,6 @@ class IsaacCompanionApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
