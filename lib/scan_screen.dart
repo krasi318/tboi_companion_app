@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
-
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'utils/image_to_hash.dart'; // Import the image_to_hash.dart utility
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -18,6 +17,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   bool _isCameraInitialized = false;
   bool _isPermissionGranted = false;
   File? _capturedImage;
+  String? _capturedImageHash; // To store the hash of the captured image
 
   @override
   void initState() {
@@ -37,7 +37,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final CameraController? cameraController = _controller;
 
-    // App state changed before we got the chance to initialize the camera
     if (cameraController == null || !cameraController.value.isInitialized) {
       return;
     }
@@ -112,11 +111,11 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         _capturedImage = newImage;
       });
 
-      // Here you'd typically process the image (create pixel hash)
-      // But for now, we'll just show the captured image
-      _showCapturedImageDialog();
+      // Generate pixel hash using image_to_hash.dart utility
+      _capturedImageHash = await ImageUtils.imageToPixelHash(newImage.path);
 
-      // Later you can implement your pixel hash comparison logic here
+      // Show the captured image along with the hash
+      _showCapturedImageDialog();
     } catch (e) {
       print('Error capturing image: $e');
     }
@@ -134,10 +133,20 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
             ),
             content:
                 _capturedImage != null
-                    ? Container(
-                      width: 250,
-                      height: 250,
-                      child: Image.file(_capturedImage!),
+                    ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 250,
+                          height: 250,
+                          child: Image.file(_capturedImage!),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Pixel Hash: $_capturedImageHash', // Show the hash
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     )
                     : Text(
                       'Failed to capture image',
@@ -149,6 +158,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                   Navigator.of(context).pop();
                   setState(() {
                     _capturedImage = null; // Reset captured image
+                    _capturedImageHash = null; // Reset hash
                   });
                 },
                 child: Text(
@@ -158,7 +168,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               ),
               TextButton(
                 onPressed: () {
-                  // TODO: Implement your pixel hash comparison logic here
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

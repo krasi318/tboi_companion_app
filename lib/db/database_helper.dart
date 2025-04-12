@@ -23,13 +23,14 @@ class DatabaseHelper {
 
   Future _createDB(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE items (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        description TEXT,
-        imagePath TEXT
-      )
-    ''');
+    CREATE TABLE items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      description TEXT,
+      imagePath TEXT,
+      pixelHash TEXT
+    )
+  ''');
   }
 
   Future<void> insertItem(Item item) async {

@@ -148,6 +148,13 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 16.0),
                 textAlign: TextAlign.center,
               ),
+              SizedBox(height: 16.0),
+              // Display Pixel Hash
+              Text(
+                'Pixel Hash: ${item.pixelHash ?? 'Not available'}', // Fallback in case pixelHash is null
+                style: TextStyle(color: Colors.white70, fontSize: 14.0),
+                textAlign: TextAlign.center,
+              ),
               SizedBox(height: 24.0),
             ],
           ),

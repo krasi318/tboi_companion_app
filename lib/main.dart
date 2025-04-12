@@ -20,6 +20,13 @@ void main() async {
     print('Database seeded with initial items!');
   }
 
+  // Print the hash of the first image in the database
+  if (items.isNotEmpty) {
+    print('Pixel Hash of first item: ${items[0].pixelHash}');
+  } else {
+    print('No items found in the database');
+  }
+
   runApp(IsaacCompanionApp());
 }
 
