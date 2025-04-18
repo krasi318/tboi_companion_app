@@ -1,49 +1,35 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 
 class ImageUtils {
-  // Convert an image to a pixel hash
-  static String imageToPixelHash(String imagePath) {
-    final image = img.decodeImage(File(imagePath).readAsBytesSync());
-
-    if (image == null) {
-      throw Exception("Failed to load image");
-    }
-
-    // Resize image to a smaller size for hashing (optional)
-    final resizedImage = img.copyResize(image, width: 16, height: 16);
-
-    String pixelHash = '';
-    for (int y = 0; y < resizedImage.height; y++) {
-      for (int x = 0; x < resizedImage.width; x++) {
-        final pixel = resizedImage.getPixel(x, y);
-
-        // Extracting RGB values directly
-        final int red = img.getRed(pixel);
-        final int green = img.getGreen(pixel);
-        final int blue = img.getBlue(pixel);
-
-        // Calculate the brightness (average RGB value)
-        final int brightness = (red + green + blue) ~/ 3;
-
-        // Generate pixel hash (1 for bright, 0 for dark)
-        pixelHash += brightness > 128 ? '1' : '0';
-      }
-    }
-
-    return pixelHash;
+  // Original: From file path
+  static String imageToPixelHash(String path) {
+    final image = img.decodeImage(File(path).readAsBytesSync());
+    return _hashFromImage(image);
   }
 
-  // Compare two pixel hashes
-  static bool comparePixelHashes(String hash1, String hash2) {
-    int matchCount = 0;
-    for (int i = 0; i < hash1.length; i++) {
-      if (hash1[i] == hash2[i]) {
-        matchCount++;
+  // ✅ New: From raw bytes (e.g., from asset)
+  static String imageToPixelHashFromBytes(Uint8List bytes) {
+    final image = img.decodeImage(bytes);
+    return _hashFromImage(image);
+  }
+
+  static String _hashFromImage(img.Image? image) {
+    if (image == null) return '';
+
+    final resized = img.copyResize(image, width: 16, height: 16);
+    String hash = '';
+    for (int y = 0; y < resized.height; y++) {
+      for (int x = 0; x < resized.width; x++) {
+        final pixel = resized.getPixel(x, y);
+        final r = img.getRed(pixel);
+        final g = img.getGreen(pixel);
+        final b = img.getBlue(pixel);
+        final brightness = (r + g + b) ~/ 3;
+        hash += brightness > 128 ? '1' : '0';
       }
     }
-
-    double matchPercentage = (matchCount / hash1.length) * 100;
-    return matchPercentage >= 80;
+    return hash;
   }
 }

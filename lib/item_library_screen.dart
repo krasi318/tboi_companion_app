@@ -1,3 +1,4 @@
+import 'package:tboi_companion_app/utils/image_handling.dart';
 import 'package:flutter/material.dart';
 import 'db/database_helper.dart';
 import 'models/item.dart';
@@ -76,8 +77,8 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/images/${item.imagePath}',
+                        Image(
+                          image: ImageUtils.getImageProvider(item.imagePath),
                           width: 80,
                           height: 80,
                           errorBuilder: (context, error, stackTrace) {
@@ -128,10 +129,18 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/${item.imagePath}',
+              Image(
+                image: ImageUtils.getImageProvider(item.imagePath),
                 width: 100,
                 height: 100,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.grey[700],
+                    child: Icon(Icons.image_not_supported, color: Colors.white),
+                  );
+                },
               ),
               SizedBox(height: 16.0),
               Text(

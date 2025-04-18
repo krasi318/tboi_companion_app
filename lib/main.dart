@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tboi_companion_app/db/seed_data.dart';
 import 'item_library_screen.dart';
 import 'search_screen.dart';
@@ -9,9 +11,14 @@ void main() async {
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
+  String dbPath = await getDatabasePath();
+  print("Database Path: $dbPath");
+
   // Initialize database
   final dbHelper = DatabaseHelper.instance;
-  await dbHelper.database; // This will create the database if it doesn't exist
+  await DatabaseHelper
+      .instance
+      .database; // This will drop and recreate the database
 
   // Check if database is empty and seed if needed
   final items = await dbHelper.getAllItems();
@@ -28,6 +35,13 @@ void main() async {
   }
 
   runApp(IsaacCompanionApp());
+}
+
+Future<String> getDatabasePath() async {
+  final directory = await getApplicationDocumentsDirectory();
+  final dbPath = join(directory.path, 'all_items.db');
+  print("Database Path: $dbPath"); // This will print the path to the console
+  return dbPath;
 }
 
 class IsaacCompanionApp extends StatelessWidget {
