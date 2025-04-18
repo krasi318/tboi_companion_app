@@ -9,16 +9,28 @@ class SeedData {
 
     final itemsData = [
       {
+        'name': 'The Inner Eye',
+        'description':
+            'Triple shot. Makes Isaac shoot 3 tears at once in a spread pattern.',
+        'assetImage': 'assets/images/mushroom.png',
+      },
+      {
         'name': 'Brimstone',
         'description':
             'Blood laser barrage. Upon use, charges and fires a powerful blood laser in the direction the player is firing.',
         'assetImage': 'assets/images/brimstone.png',
       },
       {
-        'name': 'The Inner Eye',
+        'name': 'Soy Milk',
         'description':
-            'Triple shot. Makes Isaac shoot 3 tears at once in a spread pattern.',
-        'assetImage': 'assets/images/mushroom.png',
+            'Tears are replaced with a rapid fire of small tears. Damage is significantly reduced.',
+        'assetImage': 'assets/images/soy-milk.png',
+      },
+      {
+        'name': 'Monstros Lung',
+        'description':
+            'Tears are charged and shot through a large barrel. The tears are charged and shot in a spread pattern.',
+        'assetImage': 'assets/images/monstros-lung.png',
       },
     ];
 

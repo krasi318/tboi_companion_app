@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'utils/image_to_hash.dart'; // Import the image_to_hash.dart utility
+import 'package:tboi_companion_app/utils/image_cropper.dart';
+import 'utils/image_to_hash.dart';
+import 'utils/hash_matcher.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -18,6 +21,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   bool _isPermissionGranted = false;
   File? _capturedImage;
   String? _capturedImageHash; // To store the hash of the captured image
+  Uint8List? _croppedImageBytes;
 
   @override
   void initState() {
@@ -103,18 +107,32 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       final String imageName = path.basename(photo.path);
       final String imagePath = path.join(appDir.path, imageName);
 
-      // Copy the image to a new location with a timestamped name
+      // Copy the image to a new location
       final File newImage = File(imagePath);
       await File(photo.path).copy(newImage.path);
 
+      // Load image bytes
+      final imageBytes = await newImage.readAsBytes();
+
+      // Crop the center rectangle from the image
+      final croppedBytes = ImageCropper.cropCenterRect(
+        imageBytes,
+        cropWidthPercent: 0.5, // adjust as needed
+        cropHeightPercent: 0.5,
+      );
+
+      // Generate pixel hash from the cropped image
+      final pixelHash = await ImageUtils.imageToPixelHashFromBytes(
+        croppedBytes,
+      );
+
       setState(() {
         _capturedImage = newImage;
+        _croppedImageBytes = croppedBytes;
+        _capturedImageHash = pixelHash;
       });
 
-      // Generate pixel hash using image_to_hash.dart utility
-      _capturedImageHash = await ImageUtils.imageToPixelHash(newImage.path);
-
-      // Show the captured image along with the hash
+      // Show dialog with the cropped image preview
       _showCapturedImageDialog();
     } catch (e) {
       print('Error capturing image: $e');
@@ -126,29 +144,29 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: Color(0xFF2C2C2C),
-            title: Text(
+            backgroundColor: const Color(0xFF2C2C2C),
+            title: const Text(
               'Image Captured',
               style: TextStyle(color: Colors.white),
             ),
             content:
-                _capturedImage != null
+                _croppedImageBytes != null
                     ? Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
                           width: 250,
                           height: 250,
-                          child: Image.file(_capturedImage!),
+                          child: Image.memory(_croppedImageBytes!),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
-                          'Pixel Hash: $_capturedImageHash', // Show the hash
-                          style: TextStyle(color: Colors.white),
+                          'Pixel Hash: $_capturedImageHash',
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     )
-                    : Text(
+                    : const Text(
                       'Failed to capture image',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -157,27 +175,44 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                 onPressed: () {
                   Navigator.of(context).pop();
                   setState(() {
-                    _capturedImage = null; // Reset captured image
-                    _capturedImageHash = null; // Reset hash
+                    _capturedImage = null;
+                    _croppedImageBytes = null;
+                    _capturedImageHash = null;
                   });
                 },
-                child: Text(
+                child: const Text(
                   'Retake',
                   style: TextStyle(color: Colors.deepPurple),
                 ),
               ),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Image processing will be implemented in the future',
-                      ),
-                    ),
-                  );
+
+                  if (_capturedImageHash != null) {
+                    final match = await HashMatcher.findClosestMatch(
+                      _capturedImageHash!,
+                      similarityThreshold: 0.7,
+                    );
+
+                    if (match != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('✅ Match: ${match.name}'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('❌ No close match found.'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
                 },
-                child: Text(
+                child: const Text(
                   'Process',
                   style: TextStyle(color: Colors.deepPurple),
                 ),
