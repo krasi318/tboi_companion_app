@@ -18,7 +18,7 @@ class ImageUtils {
   static String _hashFromImage(img.Image? image) {
     if (image == null) return '';
 
-    final resized = img.copyResize(image, width: 64, height: 64);
+    final resized = img.copyResize(image, width: 128, height: 128);
     String hash = '';
     for (int y = 0; y < resized.height; y++) {
       for (int x = 0; x < resized.width; x++) {

@@ -6,8 +6,8 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tboi_companion_app/utils/image_cropper.dart';
-import 'utils/image_to_hash.dart';
-import 'utils/hash_matcher.dart';
+import '../utils/image_to_hash.dart';
+import '../utils/hash_matcher.dart';
 
 class ScanScreen extends StatefulWidget {
   @override

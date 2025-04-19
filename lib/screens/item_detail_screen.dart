@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tboi_companion_app/utils/image_handling.dart';
 import '../models/item.dart';
 
 class ItemDetailScreen extends StatelessWidget {
@@ -25,8 +26,9 @@ class ItemDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Item Image (with error handling)
-          Image.asset(
-            'assets/images/${item.imagePath}',
+          Image(
+            image: ImageUtils.getImageProvider(item.imagePath),
+            fit: BoxFit.cover,
             width: 200,
             height: 200,
             errorBuilder: (context, error, stackTrace) {
@@ -61,8 +63,15 @@ class ItemDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           // Optional: Add stats like "Rarity" or "Unlock Condition"
-          _buildStatRow("Rarity", "★★★★☆"),
+          _buildStatRow("Rarity", "★★★☆"),
           _buildStatRow("Unlock Condition", "Beat Boss Rush"),
+          const SizedBox(height: 24),
+          // Pixel Hash
+          Text(
+            'Pixel Hash: ${item.pixelHash ?? 'Not available'}',
+            style: const TextStyle(color: Colors.white70, fontSize: 14.0),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

@@ -1,7 +1,8 @@
 import 'package:tboi_companion_app/utils/image_handling.dart';
 import 'package:flutter/material.dart';
-import 'db/database_helper.dart';
-import 'models/item.dart';
+import '../db/database_helper.dart';
+import '../models/item.dart';
+import 'item_detail_screen.dart';
 
 class ItemLibraryScreen extends StatefulWidget {
   @override
@@ -70,7 +71,12 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
                 elevation: 4.0,
                 child: InkWell(
                   onTap: () {
-                    _showItemDetails(context, item);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ItemDetailScreen(item: item),
+                      ),
+                    );
                   },
                   child: Padding(
                     padding: EdgeInsets.all(12.0),
@@ -112,63 +118,6 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
           );
         },
       ),
-    );
-  }
-
-  void _showItemDetails(BuildContext context, Item item) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Color(0xFF2C2C2C),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image(
-                image: ImageUtils.getImageProvider(item.imagePath),
-                width: 100,
-                height: 100,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.grey[700],
-                    child: Icon(Icons.image_not_supported, color: Colors.white),
-                  );
-                },
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                item.name,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                item.description,
-                style: TextStyle(color: Colors.white, fontSize: 16.0),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 16.0),
-              // Display Pixel Hash
-              Text(
-                'Pixel Hash: ${item.pixelHash ?? 'Not available'}', // Fallback in case pixelHash is null
-                style: TextStyle(color: Colors.white70, fontSize: 14.0),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 24.0),
-            ],
-          ),
-        );
-      },
     );
   }
 }

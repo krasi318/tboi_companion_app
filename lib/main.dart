@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tboi_companion_app/db/seed_data.dart';
-import 'item_library_screen.dart';
-import 'search_screen.dart';
-import 'scan_screen.dart';
+import 'screens/item_library_screen.dart';
+import 'screens/search_screen.dart';
+import 'screens/scan_screen.dart';
 import 'db/database_helper.dart';
 
 void main() async {
@@ -64,12 +64,48 @@ class HomeScreen extends StatelessWidget {
         title: Text('Binding of Isaac Companion'),
         backgroundColor: Color(0xFF2C2C2C),
       ),
-      body: Center(
-        child: Text(
-          'Welcome to the Isaac Companion!',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
+      body: Stack(
+        children: [
+          // You can still have a centered widget here if you want
+          Center(
+            child: Text(
+              "Welcome to the Isaac Companion!",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
+
+          // Bottom-right positioned search helper
+          Positioned(
+            bottom: 80,
+            right: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "Can't find your item?",
+                  style: TextStyle(fontSize: 14, color: Colors.white70),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SearchScreen()),
+                    );
+                  },
+                  child: Text(
+                    "Try searching manually →",
+                    style: TextStyle(
+                      color: Colors.deepPurpleAccent,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
+
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF2C2C2C),
         shape: CircularNotchedRectangle(),
