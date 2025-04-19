@@ -19,6 +19,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   List<CameraDescription> _cameras = [];
   bool _isCameraInitialized = false;
   bool _isPermissionGranted = false;
+  // ignore: unused_field
   File? _capturedImage;
   String? _capturedImageHash; // To store the hash of the captured image
   Uint8List? _croppedImageBytes;
@@ -117,8 +118,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       // Crop the center rectangle from the image
       final croppedBytes = ImageCropper.cropCenterRect(
         imageBytes,
-        cropWidthPercent: 0.5, // adjust as needed
-        cropHeightPercent: 0.5,
+        cropWidthPercent: 0.4, // adjust as needed
+        cropHeightPercent: 0.4,
       );
 
       // Generate pixel hash from the cropped image
@@ -140,6 +141,12 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   }
 
   void _showCapturedImageDialog() {
+    if (_capturedImageHash != null) {
+      print(
+        '📸 Pixel Hash: $_capturedImageHash',
+      ); //print hash for debug purposes
+    }
+
     showDialog(
       context: context,
       builder:
