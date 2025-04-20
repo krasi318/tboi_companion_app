@@ -12,8 +12,9 @@ class ItemDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF1E1E1E),
       appBar: AppBar(
-        title: Text(item.name),
+        title: Text(item.name, style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF2C2C2C),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: _buildBody(),
     );

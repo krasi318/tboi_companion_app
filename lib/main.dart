@@ -45,6 +45,8 @@ Future<String> getDatabasePath() async {
 }
 
 class IsaacCompanionApp extends StatelessWidget {
+  const IsaacCompanionApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,12 +58,17 @@ class IsaacCompanionApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E), // spooky dark gray
       appBar: AppBar(
-        title: Text('Binding of Isaac Companion'),
+        title: Text(
+          'Binding of Isaac Companion',
+          style: const TextStyle(color: Colors.white),
+        ),
         backgroundColor: Color(0xFF2C2C2C),
       ),
       body: Stack(

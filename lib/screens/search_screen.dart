@@ -5,6 +5,8 @@ import 'package:tboi_companion_app/utils/image_handling.dart';
 import 'package:tboi_companion_app/screens/item_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -12,7 +14,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   List<Item> _allItems = [];
   List<Item> _filteredItems = [];
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -51,7 +53,8 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       appBar: AppBar(
-        title: Text('Search Items'),
+        title: Text('Search Items', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF2C2C2C),
       ),
       body: Padding(

@@ -1,4 +1,3 @@
-# 🩸 TBOI Companion App
 
 A mobile companion app for *The Binding of Isaac*, designed to help players identify in-game items using image scanning and pixel-based hashing. Built with Flutter and powered by custom image recognition logic, this app allows you to snap a photo or pick an image of an item and instantly find a match from your local item library.
 

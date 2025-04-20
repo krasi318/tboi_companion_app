@@ -5,11 +5,15 @@ import 'package:camera/camera.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tboi_companion_app/screens/item_detail_screen.dart';
 import 'package:tboi_companion_app/utils/image_cropper.dart';
+import 'package:tboi_companion_app/utils/image_handling.dart' as img_utils;
 import '../utils/image_to_hash.dart';
 import '../utils/hash_matcher.dart';
 
 class ScanScreen extends StatefulWidget {
+  const ScanScreen({super.key});
+
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
@@ -123,9 +127,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       );
 
       // Generate pixel hash from the cropped image
-      final pixelHash = await ImageUtils.imageToPixelHashFromBytes(
-        croppedBytes,
-      );
+      final pixelHash = ImageUtils.imageToPixelHashFromBytes(croppedBytes);
 
       setState(() {
         _capturedImage = newImage;
@@ -161,16 +163,16 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                     ? Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 250,
                           height: 250,
                           child: Image.memory(_croppedImageBytes!),
                         ),
                         const SizedBox(height: 16),
-                        Text(
-                          'Pixel Hash: $_capturedImageHash',
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                        // Text(
+                        //   'Pixel Hash: $_capturedImageHash',
+                        //   style: const TextStyle(color: Colors.white),
+                        // ),
                       ],
                     )
                     : const Text(
@@ -202,12 +204,84 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                       similarityThreshold: 0.7,
                     );
 
+                    if (!mounted) return;
+
                     if (match != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('✅ Match: ${match.name}'),
-                          backgroundColor: Colors.green,
-                        ),
+                      // Show match dialog with image + buttons
+                      showDialog(
+                        context: context,
+                        builder:
+                            (context) => AlertDialog(
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              title: const Text(
+                                'Item Found',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image(
+                                    image: img_utils
+                                        .ImageUtils.getImageProvider(
+                                      match.imagePath,
+                                    ),
+                                    width: 100,
+                                    height: 100,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: 100,
+                                        height: 100,
+                                        color: Colors.grey[700],
+                                        child: const Icon(
+                                          Icons.image_not_supported,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    match.name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // just close dialog
+                                  },
+                                  child: const Text(
+                                    'Scan Another',
+                                    style: TextStyle(color: Colors.deepPurple),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // close dialog
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (_) =>
+                                                ItemDetailScreen(item: match),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.deepPurple,
+                                    foregroundColor: Colors.black,
+                                  ),
+                                  child: const Text('View Item'),
+                                ),
+                              ],
+                            ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -234,7 +308,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       appBar: AppBar(
-        title: Text('Scan Item'),
+        title: Text('Scan Item', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF2C2C2C),
       ),
       body:
@@ -251,7 +326,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       alignment: Alignment.center,
       children: [
         // Camera preview
-        Container(
+        SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: CameraPreview(_controller!),

@@ -5,6 +5,8 @@ import '../models/item.dart';
 import 'item_detail_screen.dart';
 
 class ItemLibraryScreen extends StatefulWidget {
+  const ItemLibraryScreen({super.key});
+
   @override
   _ItemLibraryScreenState createState() => _ItemLibraryScreenState();
 }
@@ -23,7 +25,11 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       appBar: AppBar(
-        title: Text('Item Library'),
+        title: Text(
+          'Item Library',
+          style: const TextStyle(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF2C2C2C),
       ),
       body: FutureBuilder<List<Item>>(
