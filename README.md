@@ -29,28 +29,7 @@ A mobile companion app for *The Binding of Isaac*, designed to help players iden
 
 ## 📂 Project Structure
 
-lib/
-│
-├── db/
-│   ├── database_helper.dart     # Handles local DB operations
-│   └── seed_data.dart           # Seeds item data into the DB
-│
-├── models/
-│   └── item.dart                # Item model (ID, name, hash, image ref, etc.)
-│
-├── screens/
-│   ├── item_detail_screen.dart  # Shows detailed item info
-│   ├── item_library_screen.dart # Grid/List of all known items
-│   ├── scan_screen.dart         # Camera/Picker + matching logic
-│   └── search_screen.dart       # Manual keyword search
-│
-├── utils/
-│   ├── hash_matcher.dart        # Compares hash strings to find matches
-│   ├── image_cropper.dart       # (Optional) crops scanned images
-│   ├── image_handling.dart      # Image loading/handling helpers
-│   └── image_to_hash.dart       # Converts image to binary pixel hash
-│
-└── main.dart                    # Entry point, sets up routing and theme
+![111](https://github.com/user-attachments/assets/548cacbd-388c-47d5-9f2d-624a7462ea24)
 
 
 ---
