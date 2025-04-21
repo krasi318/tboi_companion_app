@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tboi_companion_app/db/seed_data.dart';
+import 'package:tboi_companion_app/models/user.dart';
 import 'screens/item_library_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/scan_screen.dart';
 import 'db/database_helper.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized
@@ -52,7 +55,12 @@ class IsaacCompanionApp extends StatelessWidget {
     return MaterialApp(
       title: 'Isaac Companion',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: HomeScreen(),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/home': (context) => const HomeScreen(),
+      },
     );
   }
 }
@@ -62,22 +70,64 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = ModalRoute.of(context)?.settings.arguments as User?;
+
     return Scaffold(
-      backgroundColor: Color(0xFF1E1E1E), // spooky dark gray
+      backgroundColor: const Color(0xFF1E1E1E),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Binding of Isaac Companion',
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF2C2C2C),
+        backgroundColor: const Color(0xFF2C2C2C),
+        actions: [
+          // Logout Button
+          IconButton(
+            icon: const Icon(Icons.exit_to_app, color: Colors.white),
+            onPressed: () {
+              // Log out: Navigate to login screen
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
-          // You can still have a centered widget here if you want
+          // Centered Welcome Message
           Center(
             child: Text(
-              "Welcome to the Isaac Companion!",
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              user != null
+                  ? "Hello, ${user.username}!"
+                  : "Welcome to the Isaac Companion!",
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
+
+          // Recently Scanned Placeholder (to be implemented)
+          Positioned(
+            top: 150,
+            left: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Recently Scanned:",
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
+                const SizedBox(height: 8),
+                // Placeholder
+                // Container(
+                //   width: 200,
+                //   height: 100,
+                //   color: Colors.grey, // Just a placeholder
+                //   child: const Center(
+                //     child: Text(
+                //       "Scanned Items Placeholder",
+                //       style: TextStyle(color: Colors.white),
+                //     ),
+                //   ),
+                // ),
+              ],
             ),
           ),
 
@@ -88,7 +138,7 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   "Can't find your item?",
                   style: TextStyle(fontSize: 14, color: Colors.white70),
                 ),
@@ -99,7 +149,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => SearchScreen()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Try searching manually →",
                     style: TextStyle(
                       color: Colors.deepPurpleAccent,
@@ -112,16 +162,15 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-
       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF2C2C2C),
-        shape: CircularNotchedRectangle(),
+        color: const Color(0xFF2C2C2C),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 8.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(Icons.library_books, color: Colors.white),
+              icon: const Icon(Icons.library_books, color: Colors.white),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -130,9 +179,9 @@ class HomeScreen extends StatelessWidget {
               },
               tooltip: "Item Library",
             ),
-            SizedBox(width: 48), // spacer for FAB
+            const SizedBox(width: 48), // spacer for FAB
             IconButton(
-              icon: Icon(Icons.search, color: Colors.white),
+              icon: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -148,7 +197,7 @@ class HomeScreen extends StatelessWidget {
         height: 72,
         width: 72,
         child: FloatingActionButton(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           backgroundColor: Colors.deepPurple,
           onPressed: () {
             Navigator.push(
@@ -157,10 +206,9 @@ class HomeScreen extends StatelessWidget {
             );
           },
           tooltip: "Scan Item",
-          child: Icon(Icons.camera_alt, size: 32),
+          child: const Icon(Icons.camera_alt, size: 32),
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

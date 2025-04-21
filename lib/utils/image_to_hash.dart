@@ -9,7 +9,6 @@ class ImageUtils {
     return _hashFromImage(image);
   }
 
-  // ✅ New: From raw bytes (e.g., from asset)
   static String imageToPixelHashFromBytes(Uint8List bytes) {
     final image = img.decodeImage(bytes);
     return _hashFromImage(image);

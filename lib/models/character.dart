@@ -1,0 +1,20 @@
+// character.dart
+enum Character {
+  isaac,
+  magdalene,
+  cain,
+  judas,
+  bluebaby,
+  eve,
+  samson,
+  azazel,
+  lazarus,
+  eden,
+  theLost,
+  lilith,
+  keeper,
+  apollyon,
+  theForgotten,
+  bethany,
+  jacobAndEsau,
+}
