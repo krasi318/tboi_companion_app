@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:tboi_companion_app/db/database_helper.dart';
-import '../models/user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacementNamed(context, '/home', arguments: user);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid email or password')),
+          const SnackBar(content: Text('Невалиден имейл или парола')),
         );
       }
     }
@@ -40,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const Color(0xFF1E1E1E), // spooky dark gray
 
       appBar: AppBar(
-        title: const Text('Login', style: TextStyle(color: Colors.white)),
+        title: const Text('Вход', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF2C2C2C),
       ),
 
@@ -52,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Welcome Back!',
+                'Добре дошли обратно!',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -66,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Имейл',
                   labelStyle: const TextStyle(color: Colors.white70),
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.deepPurple),
@@ -79,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Моля, въведете вашия имейл';
                   }
                   return null;
                 },
@@ -93,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'Парола',
                   labelStyle: const TextStyle(color: Colors.white70),
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.deepPurple),
@@ -106,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return 'Моля, въведете вашата парола';
                   }
                   return null;
                 },
@@ -125,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 onPressed: _login,
                 child: const Text(
-                  'Login',
+                  'Вход',
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
@@ -138,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.pushNamed(context, '/register');
                 },
                 child: const Text(
-                  "Don't have an account? Register",
+                  "Нямате акаунт? Регистрация",
                   style: TextStyle(color: Colors.deepPurpleAccent),
                 ),
               ),
@@ -153,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.pushReplacementNamed(context, '/home');
                 },
                 child: const Text(
-                  "Sign in as Guest",
+                  "Вход като гост",
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 14,

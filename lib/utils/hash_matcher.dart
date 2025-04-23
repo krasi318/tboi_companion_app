@@ -28,7 +28,6 @@ class HashMatcher {
     return bestMatch;
   }
 
-  /// Calculates similarity between two hashes (0.0 - 1.0).
   static double _calculateSimilarity(String a, String b) {
     if (a.length != b.length) return 0.0;
 
@@ -42,8 +41,6 @@ class HashMatcher {
   }
 }
 
-/// (Optional) Finds the closest match using Hamming distance.
-/// You can adjust the `maxDistance` threshold as needed.
 Future<Item?> findClosestMatch(
   String capturedHash, {
   int maxDistance = 10,

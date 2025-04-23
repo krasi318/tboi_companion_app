@@ -8,9 +8,8 @@ class User {
   final String username;
   final String email;
   final String passwordHash;
-  final Character? favoriteCharacter; // Add this line
+  final Character? favoriteCharacter;
 
-  // Main constructor: takes raw password and hashes it, takes favorite character
   User({
     this.id,
     required this.username,
@@ -19,13 +18,12 @@ class User {
     this.favoriteCharacter,
   }) : passwordHash = _generateHash(password);
 
-  // Named constructor for loading from DB (with already hashed password)
   User.fromDb({
     this.id,
     required this.username,
     required this.email,
     required this.passwordHash,
-    this.favoriteCharacter, // Include favoriteCharacter here too
+    this.favoriteCharacter,
   });
 
   static String _generateHash(String password) {

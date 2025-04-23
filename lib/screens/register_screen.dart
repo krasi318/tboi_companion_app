@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Validate inputs
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter both email and password')),
+        const SnackBar(content: Text('Моля, въведете имейл и парола')),
       );
       return;
     }
@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Show confirmation message and navigate back to login
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text('Account created for $email')));
+    ).showSnackBar(SnackBar(content: Text('Акаунтът е създаден за $email')));
 
     Navigator.pop(context); // Go back to login
   }
@@ -51,46 +51,97 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Register")),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
+      appBar: AppBar(
+        title: const Text('Регистрация', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF2C2C2C),
+        centerTitle: true,
+      ),
+      backgroundColor: Color(0xFF1E1E1E), // spooky dark gray
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                "Регистрация",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple, // Change text color to purple
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _emailController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Имейл',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  prefixIcon: const Icon(Icons.email),
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Парола',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  prefixIcon: const Icon(Icons.lock),
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              DropdownButtonFormField<Character>(
+                value: _selectedCharacter,
+                style: const TextStyle(color: Colors.white),
 
-            // Dropdown for selecting favorite character
-            DropdownButton<Character>(
-              value: _selectedCharacter,
-              onChanged: (Character? newValue) {
-                setState(() {
-                  _selectedCharacter = newValue;
-                });
-              },
-              items:
-                  Character.values.map<DropdownMenuItem<Character>>((
-                    Character value,
-                  ) {
-                    return DropdownMenuItem<Character>(
-                      value: value,
-                      child: Text(
-                        value.toString().split('.').last,
-                      ), // Show character name
-                    );
-                  }).toList(),
-            ),
-
-            const SizedBox(height: 20),
-            ElevatedButton(onPressed: _register, child: const Text("Register")),
-          ],
+                onChanged: (Character? newValue) {
+                  setState(() {
+                    _selectedCharacter = newValue;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Любим герой',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                items:
+                    Character.values.map<DropdownMenuItem<Character>>((
+                      Character value,
+                    ) {
+                      return DropdownMenuItem<Character>(
+                        value: value,
+                        child: Text(
+                          value.toString().split('.').last,
+                        ), // Show character name
+                      );
+                    }).toList(),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _register,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  backgroundColor: Colors.deepPurple,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: const Text(
+                  "Регистрирай се",
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

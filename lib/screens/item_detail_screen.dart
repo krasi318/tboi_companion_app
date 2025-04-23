@@ -64,12 +64,12 @@ class ItemDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           // Optional: Add stats like "Rarity" or "Unlock Condition"
-          _buildStatRow("Rarity", "★★★☆"),
-          _buildStatRow("Unlock Condition", "Beat Boss Rush"),
+          _buildStatRow("Редкост", "★★★☆"),
+          _buildStatRow("Условие за отключване", "Победи Boss Rush"),
           const SizedBox(height: 24),
           // Pixel Hash
           Text(
-            'Pixel Hash: ${item.pixelHash ?? 'Not available'}',
+            'Pixel Hash: ${item.pixelHash ?? 'Няма информация'}',
             style: const TextStyle(color: Colors.white70, fontSize: 14.0),
             textAlign: TextAlign.center,
           ),

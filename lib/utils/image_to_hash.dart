@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 
 class ImageUtils {
-  // Original: From file path
   static String imageToPixelHash(String path) {
     final image = img.decodeImage(File(path).readAsBytesSync());
     return _hashFromImage(image);

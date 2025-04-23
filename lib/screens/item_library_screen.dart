@@ -26,7 +26,7 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
       backgroundColor: Color(0xFF1E1E1E),
       appBar: AppBar(
         title: Text(
-          'Item Library',
+          'Библиотека с предмети',
           style: const TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
@@ -44,7 +44,7 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                'Error loading items: ${snapshot.error}',
+                'Грешка при зареждане на предметите: ${snapshot.error}',
                 style: TextStyle(color: Colors.red),
               ),
             );
@@ -53,7 +53,7 @@ class _ItemLibraryScreenState extends State<ItemLibraryScreen> {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
               child: Text(
-                'No items found in the database.',
+                'Няма намерени предмети в базата данни.',
                 style: TextStyle(color: Colors.white),
               ),
             );

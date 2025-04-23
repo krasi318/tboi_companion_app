@@ -365,7 +365,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
           Icon(Icons.camera_alt, color: Colors.grey, size: 100),
           SizedBox(height: 24),
           Text(
-            'Camera permission is required\nto scan items',
+            'Трябва ни позволение да иползвате камерата',
             style: TextStyle(color: Colors.white, fontSize: 18),
             textAlign: TextAlign.center,
           ),
@@ -376,7 +376,10 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
             onPressed: _requestCameraPermission,
-            child: Text('Grant Permission'),
+            child: Text(
+              'Позволите камерата',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            ),
           ),
         ],
       ),

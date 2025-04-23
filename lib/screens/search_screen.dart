@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       appBar: AppBar(
-        title: Text('Search Items', style: TextStyle(color: Colors.white)),
+        title: Text('Търси предмети', style: TextStyle(color: Colors.white)),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF2C2C2C),
       ),
@@ -65,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
               controller: _controller,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: 'Search by item name...',
+                hintText: 'Потърси по име...',
                 hintStyle: TextStyle(color: Colors.white54),
                 filled: true,
                 fillColor: Color(0xFF2C2C2C),
@@ -81,7 +81,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   _filteredItems.isEmpty
                       ? Center(
                         child: Text(
-                          'No items found.',
+                          'Не са намерени предмети.',
                           style: TextStyle(color: Colors.white70),
                         ),
                       )
